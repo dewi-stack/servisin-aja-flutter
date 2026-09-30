@@ -1,0 +1,170 @@
+{
+  "vehicles": [
+    {
+      "id": "vario-160",
+      "brand": "Honda",
+      "model": "Vario 160",
+      "plate": "B 1234 KAA",
+      "year": 2023,
+      "color": "Matte Black",
+      "lastService": "3 bulan lalu"
+    },
+    {
+      "id": "nmax-155",
+      "brand": "Yamaha",
+      "model": "NMAX 155",
+      "plate": "B 5678 XYZ",
+      "year": 2022,
+      "color": "Metallic Grey",
+      "lastService": "2 bulan lalu"
+    },
+    {
+      "id": "beat",
+      "brand": "Honda",
+      "model": "Beat",
+      "plate": "B 9012 QWE",
+      "year": 2021,
+      "color": "White",
+      "lastService": "5 bulan lalu"
+    }
+  ],
+
+  "services": [
+    {
+      "id": "periodic",
+      "name": "Servis berkala",
+      "description": "Pemeriksaan rutin, tune-up ringan, dan pengecekan umum.",
+      "basePrice": 115000,
+      "durationMinutes": 90,
+      "type": "periodic"
+    },
+    {
+      "id": "oil",
+      "name": "Ganti oli",
+      "description": "Penggantian oli mesin + pemeriksaan singkat.",
+      "basePrice": 95000,
+      "durationMinutes": 45,
+      "type": "oilChange"
+    },
+    {
+      "id": "repair",
+      "name": "Perbaikan",
+      "description": "Diagnosa dan pengerjaan perbaikan sesuai keluhan.",
+      "basePrice": 120000,
+      "durationMinutes": 120,
+      "type": "repair"
+    },
+    {
+      "id": "brake",
+      "name": "Service rem",
+      "description": "Pemeriksaan sistem pengereman dan komponen terkait.",
+      "basePrice": 85000,
+      "durationMinutes": 60,
+      "type": "brakeInspection"
+    }
+  ],
+
+  "parts": [
+    {
+      "id": "mpx2",
+      "name": "Oli mesin",
+      "brand": "AHM MPX2",
+      "price": 65000,
+      "category": "Oli"
+    },
+    {
+      "id": "filter",
+      "name": "Filter udara",
+      "brand": "Honda Genuine",
+      "price": 48000,
+      "category": "Spare part"
+    },
+    {
+      "id": "pad",
+      "name": "Kampas rem depan",
+      "brand": "Honda Genuine",
+      "price": 165000,
+      "category": "Spare part"
+    },
+    {
+      "id": "plug",
+      "name": "Busi",
+      "brand": "NGK",
+      "price": 42000,
+      "category": "Spare part"
+    },
+    {
+      "id": "gear-oil",
+      "name": "Oli gardan",
+      "brand": "AHM MPX Gear Oil",
+      "price": 24000,
+      "category": "Oli"
+    }
+  ],
+
+  "workshops": [
+    {
+      "id": "kediri-kota",
+      "name": "Servisin Aja — Kediri Kota",
+      "distance": "1.8 km",
+      "hours": "Buka sampai 21:00",
+      "rating": 4.8,
+      "reviewCount": 186,
+      "address": "Jl. Panglima Sudirman, Kediri",
+      "facilities": [
+        "Waiting area",
+        "Wi-Fi",
+        "Pembayaran digital",
+        "Garansi servis"
+      ]
+    },
+    {
+      "id": "mojoroto",
+      "name": "Servisin Aja — Mojoroto",
+      "distance": "3.4 km",
+      "hours": "Buka sampai 20:00",
+      "rating": 4.7,
+      "reviewCount": 128,
+      "address": "Jl. Veteran, Mojoroto, Kediri",
+      "facilities": [
+        "Waiting area",
+        "Coffee corner",
+        "Pembayaran digital"
+      ]
+    }
+  ],
+
+  "mechanic": {
+    "id": "m1",
+    "name": "Rizky Pratama",
+    "role": "Lead Mechanic",
+    "rating": 4.9,
+    "completedJobs": 1240
+  },
+
+  "dates": [
+    "26 Sep",
+    "27 Sep",
+    "28 Sep",
+    "29 Sep"
+  ],
+
+  "times": [
+    "09:00",
+    "10:30",
+    "13:00",
+    "15:30"
+  ],
+
+  "sampleBooking": {
+    "id": "#SA-260926-001",
+    "vehicleConfigs": [],
+    "workshopName": "Servisin Aja — Kediri Kota",
+    "dateLabel": "26 Sep",
+    "timeLabel": "10:30",
+    "statusByVehicle": {
+      "vario-160": "Sedang dikerjakan",
+      "nmax-155": "Menunggu pemeriksaan"
+    }
+  }
+}
