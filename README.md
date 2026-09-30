@@ -405,13 +405,13 @@ flutter --version
 Clone repository:
 
 ```bash
-git clone <PUBLIC_GITHUB_REPOSITORY_URL>
+git clone https://github.com/dewi-stack/servisin-aja-flutter.git
 ```
 
 Masuk ke project:
 
 ```bash
-cd servis_in_aja_flutter
+cd servisin_aja_flutter
 ```
 
 Install dependency:
@@ -490,7 +490,7 @@ build/app/outputs/flutter-apk/app-release.apk
 
 **Release APK:**
 
-> [ISI LINK GOOGLE DRIVE ATAU GITHUB RELEASE DI SINI]
+> [(https://drive.google.com/file/d/1Y8P-CfjRYS2hQ3587JMGYIC7LUc_zTsG/view?usp=sharing)]
 
 APK disediakan agar tim reviewer dapat langsung meng-install dan menguji aplikasi pada perangkat Android.
 
@@ -500,7 +500,7 @@ APK disediakan agar tim reviewer dapat langsung meng-install dan menguji aplikas
 
 **Repository:**
 
-> [ISI LINK GITHUB PUBLIC DI SINI]
+> [(https://github.com/dewi-stack/servisin-aja-flutter.git)]
 
 Repository harus bersifat public dan mencakup:
 
@@ -569,38 +569,38 @@ Design token dan reusable component dipusatkan agar proses fine-tuning terhadap 
 
 ## Figma
 
-* [ ] Public Figma link
-* [ ] Anyone with the link → Can view
-* [ ] Home tersedia
-* [ ] Multi-vehicle flow tersedia
-* [ ] Service configuration tersedia
-* [ ] Workshop & schedule tersedia
-* [ ] Review booking tersedia
-* [ ] Booking success tersedia
+* [✅] Public Figma link
+* [✅] Anyone with the link → Can view
+* [✅] Home tersedia
+* [✅] Multi-vehicle flow tersedia
+* [✅] Service configuration tersedia
+* [✅] Workshop & schedule tersedia
+* [✅] Review booking tersedia
+* [✅] Booking success tersedia
 
 ## GitHub
 
-* [ ] Repository public
-* [ ] Source code lengkap
-* [ ] Struktur folder terorganisir
-* [ ] Mock data tersedia
-* [ ] README tersedia
-* [ ] Commit history deskriptif
+* [✅] Repository public
+* [✅] Source code lengkap
+* [✅] Struktur folder terorganisir
+* [✅] Mock data tersedia
+* [✅] README tersedia
+* [✅] Commit history deskriptif
 
 ## APK
 
-* [ ] Release APK berhasil dibuat
-* [ ] APK dapat di-install
-* [ ] APK dapat dijalankan
-* [ ] APK tersedia melalui Google Drive / GitHub Releases
+* [✅] Release APK berhasil dibuat
+* [✅] APK dapat di-install
+* [✅] APK dapat dijalankan
+* [✅] APK tersedia melalui Google Drive / GitHub Releases
 
 ## Flutter
 
-* [ ] `flutter pub get`
-* [ ] `flutter analyze`
-* [ ] `flutter test`
-* [ ] `flutter run`
-* [ ] `flutter build apk --release`
+* [✅] `flutter pub get`
+* [✅] `flutter analyze`
+* [✅] `flutter test`
+* [✅] `flutter run`
+* [✅] `flutter build apk --release`
 
 ---
 
