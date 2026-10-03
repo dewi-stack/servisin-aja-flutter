@@ -12,15 +12,11 @@ import 'presentation/screens/home_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final repository = MockBookingRepository();
-
-  final controller = BookingController(
-    repository: repository,
-  );
-
   runApp(
-    ChangeNotifierProvider<BookingController>.value(
-      value: controller,
+    ChangeNotifierProvider<BookingController>(
+      create: (_) => BookingController(
+        repository: MockBookingRepository(),
+      ),
       child: const ServisinAjaApp(),
     ),
   );
@@ -57,9 +53,7 @@ class ServisinAjaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Servisin Aja',
       theme: AppTheme.light(),
-      home: HomeScreen(
-        controller: context.read<BookingController>(),
-      ),
+      home: const HomeScreen(),
     );
   }
 }

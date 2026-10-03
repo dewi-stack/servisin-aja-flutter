@@ -11,24 +11,32 @@ import 'package:servisin_aja/state/booking_controller.dart';
 
 void main() {
   testWidgets('home renders', (tester) async {
+    // =========================================================================
+    // ARRANGE
+    // =========================================================================
+
     final repository = TestBookingRepository();
 
-    final controller = BookingController(
-      repository: repository,
-    );
+    // =========================================================================
+    // ACT
+    // =========================================================================
 
     await tester.pumpWidget(
-      ChangeNotifierProvider<BookingController>.value(
-        value: controller,
-        child: MaterialApp(
-          home: HomeScreen(
-            controller: controller,
-          ),
+      ChangeNotifierProvider<BookingController>(
+        create: (_) => BookingController(
+          repository: repository,
+        ),
+        child: const MaterialApp(
+          home: HomeScreen(),
         ),
       ),
     );
 
     await tester.pumpAndSettle();
+
+    // =========================================================================
+    // ASSERT
+    // =========================================================================
 
     expect(
       find.text('Servisin Aja'),

@@ -17,77 +17,90 @@ class BookingController extends ChangeNotifier {
 
     activeBooking = repository.getActiveBooking();
 
-    selectedVehicleIds.addAll([
+    _selectedVehicleIds.addAll([
       'vario-160',
       'nmax-155',
     ]);
   }
 
+  // ==========================================================================
+  // STATE
+  // ==========================================================================
+
   late final List<Vehicle> vehicles;
+
   late Booking activeBooking;
 
-  final List<String> selectedVehicleIds = [];
+  final List<String> _selectedVehicleIds = [];
 
   final Map<String, VehicleServiceConfig> _configs = {};
 
-  final Map<String, String> statusByVehicle = {
+  final Map<String, String> _statusByVehicle = {
     ...MockData.sampleBooking().statusByVehicle,
   };
 
-  String workshop = MockData.workshops.first.name;
-  String dateLabel = MockData.dates.first;
-  String timeLabel = MockData.times[1];
+  String _workshop = MockData.workshops.first.name;
+  String _dateLabel = MockData.dates.first;
+  String _timeLabel = MockData.times[1];
 
-  double? rating;
-  String ratingNote = '';
+  double? _rating;
+  String _ratingNote = '';
 
-  bool bookingSubmitted = true;
+  bool _bookingSubmitted = true;
 
   // ==========================================================================
   // VEHICLES
   // ==========================================================================
 
+  List<String> get selectedVehicleIds {
+    return List.unmodifiable(_selectedVehicleIds);
+  }
+
   List<Vehicle> get selectedVehicles {
     return vehicles
         .where(
-          (vehicle) => selectedVehicleIds.contains(vehicle.id),
+          (vehicle) => _selectedVehicleIds.contains(vehicle.id),
         )
         .toList();
   }
 
-// ==========================================================================
-// MASTER DATA
-// ==========================================================================
+  // ==========================================================================
+  // MASTER DATA
+  // ==========================================================================
 
-  List<Workshop> get workshops {
-    return MockData.workshops;
+  List<Workshop> get workshops => MockData.workshops;
+
+  List<ServiceOption> get services => MockData.services;
+
+  List<PartOption> get parts => MockData.parts;
+
+  List<String> get dates => MockData.dates;
+
+  List<String> get times => MockData.times;
+
+  // ==========================================================================
+  // BOOKING
+  // ==========================================================================
+
+  String get workshop => _workshop;
+
+  String get dateLabel => _dateLabel;
+
+  String get timeLabel => _timeLabel;
+
+  Map<String, String> get statusByVehicle {
+    return Map.unmodifiable(_statusByVehicle);
   }
 
-  List<ServiceOption> get services {
-    return MockData.services;
-  }
+  bool get bookingSubmitted => _bookingSubmitted;
 
-  List<PartOption> get parts {
-    return MockData.parts;
-  }
+  String get bookingId => activeBooking.id;
 
-// Daftar tanggal yang tersedia.
-  List<String> get dates {
-    return MockData.dates;
-  }
-
-// Daftar jam yang tersedia.
-  List<String> get times {
-    return MockData.times;
-  }
-
-// Booking dapat dilanjutkan jika minimal ada satu kendaraan
-// dan data bengkel + jadwal sudah tersedia.
   bool get canReview {
     return selectedVehicles.isNotEmpty &&
-        workshop.trim().isNotEmpty &&
-        dateLabel.trim().isNotEmpty &&
-        timeLabel.trim().isNotEmpty;
+        _workshop.trim().isNotEmpty &&
+        _dateLabel.trim().isNotEmpty &&
+        _timeLabel.trim().isNotEmpty;
   }
 
   // ==========================================================================
@@ -109,15 +122,11 @@ class BookingController extends ChangeNotifier {
   }
 
   int get completedVehicleCount {
-    return statusByVehicle.values
+    return _statusByVehicle.values
         .where(
           (value) => value == 'Selesai',
         )
         .length;
-  }
-
-  String get bookingId {
-    return activeBooking.id;
   }
 
   // ==========================================================================
@@ -146,15 +155,15 @@ class BookingController extends ChangeNotifier {
   // ==========================================================================
 
   void toggleVehicle(String id) {
-    if (selectedVehicleIds.contains(id)) {
-      // Minimal harus ada satu kendaraan.
-      if (selectedVehicleIds.length == 1) {
+    if (_selectedVehicleIds.contains(id)) {
+      // Minimal satu kendaraan harus tetap dipilih.
+      if (_selectedVehicleIds.length == 1) {
         return;
       }
 
-      selectedVehicleIds.remove(id);
+      _selectedVehicleIds.remove(id);
     } else {
-      selectedVehicleIds.add(id);
+      _selectedVehicleIds.add(id);
     }
 
     notifyListeners();
@@ -177,17 +186,21 @@ class BookingController extends ChangeNotifier {
   // ==========================================================================
 
   void chooseWorkshop(String value) {
-    workshop = value;
+    _workshop = value;
     notifyListeners();
   }
 
   void chooseDate(String value) {
-    dateLabel = value;
+    _dateLabel = value;
+
+    // Reset jam ketika tanggal diganti.
+    _timeLabel = '';
+
     notifyListeners();
   }
 
   void chooseTime(String value) {
-    timeLabel = value;
+    _timeLabel = value;
     notifyListeners();
   }
 
@@ -196,27 +209,23 @@ class BookingController extends ChangeNotifier {
   // ==========================================================================
 
   void submitBooking() {
-    bookingSubmitted = true;
+    _bookingSubmitted = true;
 
     final id = activeBooking.id;
 
     activeBooking = Booking(
       id: id,
-
-      // FIX:
-      // selectedVehicles berisi Vehicle,
-      // sedangkan configFor membutuhkan vehicle.id (String).
       vehicleConfigs: selectedVehicles
           .map(
             (vehicle) => configFor(vehicle.id),
           )
           .toList(),
-
-      workshopName: workshop,
-      dateLabel: dateLabel,
-      timeLabel: timeLabel,
-
-      statusByVehicle: statusByVehicle,
+      workshopName: _workshop,
+      dateLabel: _dateLabel,
+      timeLabel: _timeLabel,
+      statusByVehicle: Map<String, String>.from(
+        _statusByVehicle,
+      ),
     );
 
     notifyListeners();
@@ -230,7 +239,7 @@ class BookingController extends ChangeNotifier {
     String vehicleId,
     String status,
   ) {
-    statusByVehicle[vehicleId] = status;
+    _statusByVehicle[vehicleId] = status;
     notifyListeners();
   }
 
@@ -238,12 +247,16 @@ class BookingController extends ChangeNotifier {
   // RATING
   // ==========================================================================
 
+  double? get rating => _rating;
+
+  String get ratingNote => _ratingNote;
+
   void submitRating(
     double value,
     String note,
   ) {
-    rating = value;
-    ratingNote = note;
+    _rating = value;
+    _ratingNote = note;
 
     notifyListeners();
   }
@@ -253,7 +266,7 @@ class BookingController extends ChangeNotifier {
   // ==========================================================================
 
   void resetBooking() {
-    selectedVehicleIds
+    _selectedVehicleIds
       ..clear()
       ..addAll([
         'vario-160',
@@ -262,14 +275,14 @@ class BookingController extends ChangeNotifier {
 
     _configs.clear();
 
-    workshop = MockData.workshops.first.name;
-    dateLabel = MockData.dates.first;
-    timeLabel = MockData.times[1];
+    _workshop = MockData.workshops.first.name;
+    _dateLabel = MockData.dates.first;
+    _timeLabel = MockData.times[1];
 
-    rating = null;
-    ratingNote = '';
+    _rating = null;
+    _ratingNote = '';
 
-    bookingSubmitted = false;
+    _bookingSubmitted = false;
 
     notifyListeners();
   }

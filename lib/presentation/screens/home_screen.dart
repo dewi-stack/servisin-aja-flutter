@@ -18,10 +18,7 @@ import 'profile_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
-    required this.controller,
   });
-
-  final BookingController controller;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -32,36 +29,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      _HomeContent(
-        controller: widget.controller,
-        onStartBooking: _startBooking,
-      ),
-      VehicleSelectionScreen(onBack: () {
-        setState(() {
-          tab = 0;
-        });
-      }),
-      TrackingScreen(
-        onBack: () {
-          setState(() {
-            tab = 0;
-          });
-        },
-      ),
-      ProfileScreen(
-        onBack: () {
-          setState(() {
-            tab = 0;
-          });
-        },
-      ),
-    ];
-
     return Scaffold(
       body: IndexedStack(
         index: tab,
-        children: pages,
+        children: [
+          _HomeContent(
+            onStartBooking: _startBooking,
+          ),
+          VehicleSelectionScreen(
+            onBack: () {
+              setState(() {
+                tab = 0;
+              });
+            },
+          ),
+          TrackingScreen(
+            onBack: () {
+              setState(() {
+                tab = 0;
+              });
+            },
+          ),
+          ProfileScreen(
+            onBack: () {
+              setState(() {
+                tab = 0;
+              });
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNav(
         index: tab,
@@ -89,16 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _HomeContent extends StatelessWidget {
   const _HomeContent({
-    required this.controller,
     required this.onStartBooking,
   });
 
-  final BookingController controller;
   final VoidCallback onStartBooking;
 
   @override
   Widget build(BuildContext context) {
-    final c = context.watch<BookingController>();
+    final controller = context.watch<BookingController>();
 
     return SafeArea(
       bottom: false,
@@ -112,9 +106,9 @@ class _HomeContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ==============================================================
+            // ==================================================================
             // HEADER
-            // ==============================================================
+            // ==================================================================
             Row(
               children: [
                 const Text(
@@ -157,9 +151,9 @@ class _HomeContent extends StatelessWidget {
 
             const SizedBox(height: 19),
 
-            // ==============================================================
+            // ==================================================================
             // HERO BOOKING
-            // ==============================================================
+            // ==================================================================
             GestureDetector(
               onTap: onStartBooking,
               child: Container(
@@ -210,16 +204,16 @@ class _HomeContent extends StatelessWidget {
 
             const SizedBox(height: 28),
 
-            // ==============================================================
+            // ==================================================================
             // KENDARAAN SAYA
-            // ==============================================================
+            // ==================================================================
             const SectionTitle(
               title: 'Kendaraan saya',
             ),
 
             const SizedBox(height: 14),
 
-            ...c.vehicles.take(2).map(
+            ...controller.vehicles.take(2).map(
               (vehicle) {
                 return Padding(
                   padding: const EdgeInsets.only(
@@ -227,7 +221,7 @@ class _HomeContent extends StatelessWidget {
                   ),
                   child: VehicleCard(
                     vehicle: vehicle,
-                    selected: c.selectedVehicleIds.contains(
+                    selected: controller.selectedVehicleIds.contains(
                       vehicle.id,
                     ),
                     showChevron: true,
@@ -236,6 +230,9 @@ class _HomeContent extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) => VehicleDetailScreen(
                             vehicle: vehicle,
+
+                            // Sementara tetap dikirim jika
+                            // VehicleDetailScreen masih membutuhkannya.
                             controller: controller,
                           ),
                         ),
@@ -265,9 +262,9 @@ class _HomeContent extends StatelessWidget {
 
             const SizedBox(height: 28),
 
-            // ==============================================================
+            // ==================================================================
             // EKSPLORASI LAYANAN
-            // ==============================================================
+            // ==================================================================
             const SectionTitle(
               title: 'Eksplorasi layanan',
             ),
@@ -279,13 +276,13 @@ class _HomeContent extends StatelessWidget {
                 Expanded(
                   child: AppCard(
                     onTap: () {
-                      if (c.vehicles.isEmpty) {
+                      if (controller.vehicles.isEmpty) {
                         return;
                       }
 
-                      final vehicle = c.selectedVehicles.isNotEmpty
-                          ? c.selectedVehicles.first
-                          : c.vehicles.first;
+                      final vehicle = controller.selectedVehicles.isNotEmpty
+                          ? controller.selectedVehicles.first
+                          : controller.vehicles.first;
 
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -320,14 +317,14 @@ class _HomeContent extends StatelessWidget {
                 Expanded(
                   child: AppCard(
                     onTap: () {
-                      if (c.workshops.isEmpty) {
+                      if (controller.workshops.isEmpty) {
                         return;
                       }
 
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => WorkshopDetailScreen(
-                            workshop: c.workshops.first,
+                            workshop: controller.workshops.first,
                           ),
                         ),
                       );
@@ -358,9 +355,9 @@ class _HomeContent extends StatelessWidget {
 
             const SizedBox(height: 22),
 
-            // ==============================================================
+            // ==================================================================
             // BOOKING AKTIF
-            // ==============================================================
+            // ==================================================================
             const SectionTitle(
               title: 'Booking aktif',
             ),
@@ -382,7 +379,7 @@ class _HomeContent extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          c.bookingId,
+                          controller.bookingId,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -399,8 +396,8 @@ class _HomeContent extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   Text(
-                    '${c.selectedVehicles.length} kendaraan • '
-                    '${c.workshop}',
+                    '${controller.selectedVehicles.length} kendaraan • '
+                    '${controller.workshop}',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -410,7 +407,8 @@ class _HomeContent extends StatelessWidget {
                   const SizedBox(height: 6),
 
                   Text(
-                    '${c.dateLabel} • ${c.timeLabel}',
+                    '${controller.dateLabel} • '
+                    '${controller.timeLabel}',
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.muted,
@@ -419,11 +417,12 @@ class _HomeContent extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
-                  // ========================================================
-                  // TOTAL ESTIMATE - formatter digunakan di sini
-                  // ========================================================
+                  // ============================================================
+                  // TOTAL ESTIMATE
+                  // ============================================================
                   Text(
-                    'Total estimasi: ${rupiah(c.totalEstimate)}',
+                    'Total estimasi: '
+                    '${rupiah(controller.totalEstimate)}',
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -436,9 +435,9 @@ class _HomeContent extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // ==============================================================
+            // ==================================================================
             // INVOICE & RIWAYAT
-            // ==============================================================
+            // ==================================================================
             Row(
               children: [
                 Expanded(
